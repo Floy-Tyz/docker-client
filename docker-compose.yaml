@@ -51,13 +51,13 @@ services:
             - ./bash/.bashrc:/home/${USER}/.bashrc
             - ./bash/init.sh:/init.sh
 
-            - ${COMPOSER_CONFIG_PATH}:/.composer
-            - ${COMPOSER_CACHE_PATH}:/.cache/composer
+            - ${COMPOSER_CONFIG_PATH:-./composer/.config}:/.composer
+            - ${COMPOSER_CACHE_PATH:-./composer/.cache}:/.cache/composer
             - ${YARN_PATH:-./yarn}:/.yarn
 
             - /home/${USER}/.yarn:/home/${USER}/.yarn:rw
 
-            - ${PROJECT_PATH}:/var/www/app
+            - ${PROJECT_PATH:-../}:/var/www/app
 
             - /home/${USER}/.ssh:/home/${USER}/.ssh:rw
             - /etc/group:/etc/group:ro
@@ -71,7 +71,6 @@ services:
             - backend
 
 networks:
-
     backend:
         driver: bridge
         name: ${CONTAINER_NAME:-unnamed}_backend_network
