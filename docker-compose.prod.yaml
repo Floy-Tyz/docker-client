@@ -1,0 +1,6 @@
+version: '3.9'
+
+services:
+    php:
+        volumes:
+            - /home/${USER}/.gitconfig:/home/${USER}/.gitconfig:ro
