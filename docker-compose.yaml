@@ -53,9 +53,11 @@ services:
 
             - ${COMPOSER_CONFIG_PATH:-./composer/.config}:/.composer
             - ${COMPOSER_CACHE_PATH:-./composer/.cache}:/.cache/composer
-            - ${YARN_PATH:-./yarn}:/.yarn
 
-            - /home/${USER}/.yarn:/home/${USER}/.yarn:rw
+            - ${YARN_PATH:-./yarn}:/.yarn
+            - ${YARN_PATH:-./yarn}:/home/${USER}/.yarn
+
+#            - /home/${USER}/.yarn:/home/${USER}/.yarn:rw
 
             - ${PROJECT_PATH:-../}:/var/www/app
 
