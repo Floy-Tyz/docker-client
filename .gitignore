@@ -1,3 +1,5 @@
 yarn/berry/cache
 
 .env.local
+
+/.idea/
