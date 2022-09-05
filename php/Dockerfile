@@ -34,16 +34,11 @@ RUN set -xe \
 
 RUN \
     ###> CONFIGURE PHP EXTENSIONS
-        ###> CONFIGURE GD EXTENSION
-            docker-php-ext-configure gd \
-                --with-freetype=/usr/include/ \
-                --with-jpeg=/usr/include/ \
-                --with-webp=/usr/include/ \
-        ###< CONFIGURE GD EXTENSION \
-        \
-        ###> CONFIGURE INTL EXTENSION
-            && docker-php-ext-configure intl \
-        ###< CONFIGURE INTL EXTENSION
+        docker-php-ext-configure gd \
+            --with-freetype=/usr/include/ \
+            --with-jpeg=/usr/include/ \
+            --with-webp=/usr/include/ \
+        && docker-php-ext-configure intl \
     ###< CONFIGURE PHP EXTENSIONS
     \
     ###> INSTALL PHP EXTENSIONS
