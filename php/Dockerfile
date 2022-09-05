@@ -2,6 +2,8 @@ ARG PHP
 ARG NAME
 FROM $PHP
 
+ENV MUSL_LOCPATH="/usr/share/i18n/locales/musl"
+
 RUN set -xe \
     ###> BASE UTILS ###
     && apk add --update --no-cache \
@@ -12,10 +14,9 @@ RUN set -xe \
         yarn \
         icu \
         openssh-client \
-    ###> LOCALE EXTENSION ###
-        musl \
-        musl-utils \
+    ###> LOCALE EXTENSION ### \
         musl-locales \
+        musl-locales-lang \
     ###> GD EXTENSION ###
         freetype \
         libjpeg-turbo \
@@ -30,10 +31,6 @@ RUN set -xe \
         zlib-dev \
         icu-dev \
         g++
-
-###> SET RU LOCALES
-RUN echo 'export LC_ALL=ru_RU.UTF-8' >> /etc/profile.d/locale.sh && sed -i 's|LANG=C.UTF-8|LANG=ru_RU.UTF-8|' /etc/profile.d/locale.sh
-###< SET RU LOCALES
 
 RUN \
     ###> CONFIGURE PHP EXTENSIONS
