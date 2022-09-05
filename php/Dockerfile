@@ -1,56 +1,76 @@
 ARG PHP
 ARG NAME
-
 FROM $PHP
 
-RUN apk --update --no-cache add git \
-    openrc \
-    bash \
-    vim \
-    yarn
-
-RUN apk add --no-cache \
-      freetype \
-      libjpeg-turbo \
-      libpng \
-      freetype-dev \
-      libjpeg-turbo-dev \
-      libpng-dev \
-      libwebp-dev \
-    && docker-php-ext-configure gd \
-      --with-freetype=/usr/include/ \
-      --with-jpeg=/usr/include/ \
-      --with-webp=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-enable gd \
-    && apk del --no-cache \
-      freetype-dev \
-      libjpeg-turbo-dev \
-      libpng-dev \
-    && rm -rf /tmp/*
-
-
 RUN set -xe \
-    && apk add --update \
+    ###> BASE UTILS ###
+    && apk add --update --no-cache \
+        git \
+        openrc \
+        bash \
+        vim \
+        yarn \
         icu \
         openssh-client \
-    && apk add --no-cache --virtual .php-deps \
+    ###> LOCALE EXTENSION ###
+        musl \
+        musl-utils \
+        musl-locales \
+    ###> GD EXTENSION ###
+        freetype \
+        libjpeg-turbo \
+        libpng \
+        freetype-dev \
+        libjpeg-turbo-dev \
+        libpng-dev \
+        libwebp-dev \
+    ###> DEV EXTENSION ###
         make \
-    && apk add --no-cache --virtual .build-deps \
+        $PHPIZE_DEPS \
+        zlib-dev \
+        icu-dev \
+        g++
+
+###> SET RU LOCALES
+RUN echo 'export LC_ALL=ru_RU.UTF-8' >> /etc/profile.d/locale.sh && sed -i 's|LANG=C.UTF-8|LANG=ru_RU.UTF-8|' /etc/profile.d/locale.sh
+###< SET RU LOCALES
+
+RUN \
+    ###> CONFIGURE PHP EXTENSIONS
+        ###> CONFIGURE GD EXTENSION
+            docker-php-ext-configure gd \
+                --with-freetype=/usr/include/ \
+                --with-jpeg=/usr/include/ \
+                --with-webp=/usr/include/ \
+        ###< CONFIGURE GD EXTENSION \
+        \
+        ###> CONFIGURE INTL EXTENSION
+            && docker-php-ext-configure intl \
+        ###< CONFIGURE INTL EXTENSION
+    ###< CONFIGURE PHP EXTENSIONS
+    \
+    ###> INSTALL PHP EXTENSIONS
+        && docker-php-ext-install -j$(nproc)  \
+            gd \
+            intl \
+            pdo_mysql \
+            opcache \
+            exif \
+    ###< INSTALL PHP EXTENSIONS \
+    \
+    ###> CACHE CLEAR ### \
+    && apk del --no-cache \
+        freetype-dev \
+        libjpeg-turbo-dev \
+        libpng-dev \
+        make \
         $PHPIZE_DEPS \
         zlib-dev \
         icu-dev \
         g++ \
-    && docker-php-ext-configure intl \
-    && docker-php-ext-install \
-        intl \
-        pdo_mysql \
-        opcache \
-        exif \
-    && docker-php-ext-enable exif \
-    && docker-php-ext-enable intl \
+    && rm -rf /tmp/* \
     && { find /usr/local/lib -type f -print0 | xargs -0r strip --strip-all -p 2>/dev/null || true; } \
-    && apk del .build-deps \
     && rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/*
+    ###< CACHE CLEAR ###
 
 COPY --from=composer:2.1 /usr/bin/composer /usr/bin/composer
