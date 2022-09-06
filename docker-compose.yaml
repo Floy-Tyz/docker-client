@@ -14,13 +14,16 @@ services:
         depends_on:
             - php
         volumes:
-            - ${PROJECT_PATH:-../}:/var/www/app
+            ###> NGINX VOLUMES
             - ./nginx/conf.d/:/etc/nginx/conf.d
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./nginx/sites-enabled/app.conf:/etc/nginx/sites-enabled/${CONTAINER_NAME:-unnamed}.conf
             - ./nginx/logs/access.log:/var/log/nginx/access.log
             - ./nginx/logs/error.log:/var/log/nginx/error.log
+            ###> TIMEZONE VOLUMES
             - /etc/localtime:/etc/localtime:ro
+            ###> PROJECT VOLUME ###
+            - ${PROJECT_PATH:-../}:/var/www/app
         networks:
             - frontend
             - backend
@@ -48,18 +51,6 @@ services:
             ###> BASH COLORS ###
             - TERM=xterm-256color
             - PS1=${PS1}
-            ###> LOCALE ENV ###
-            - LC_NUMERIC="ru_RU.UTF-8"
-            - LC_TIME="ru_RU.UTF-8"
-            - LC_COLLATE="ru_RU.UTF-8"
-            - LC_MONETARY="ru_RU.UTF-8"
-            - LC_MESSAGES="ru_RU.UTF-8"
-            - LC_PAPER="ru_RU.UTF-8"
-            - LC_NAME="ru_RU.UTF-8"
-            - LC_ADDRESS="ru_RU.UTF-8"
-            - LC_TELEPHONE="ru_RU.UTF-8"
-            - LC_MEASUREMENT="ru_RU.UTF-8"
-            - LC_IDENTIFICATION="ru_RU.UTF-8"
         volumes:
             ###> BASH VOLUMES ###
             - ./bash/.bash_aliases:/home/${USER}/.bash_aliases
@@ -79,6 +70,7 @@ services:
             - /etc/shadow:/etc/shadow:ro
             ###> TIMEZONE VOLUMES
             - /etc/localtime:/etc/localtime:ro
+            ###> PHP INI VOLUME
             - ./php/php.ini:/usr/local/etc/php/conf.d/custom.php.ini
             ###> PROJECT VOLUME ###
             - ${PROJECT_PATH:-../}:/var/www/app

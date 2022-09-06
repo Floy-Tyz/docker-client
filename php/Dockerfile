@@ -1,8 +1,26 @@
+###> ARGUMENTS ###
 ARG PHP
 ARG NAME
-FROM $PHP
+###< ARGUMENTS ###
 
-ENV MUSL_LOCPATH="/usr/share/i18n/locales/musl"
+###> PHP IMAGE FORM ARGUMENTS ###
+FROM $PHP
+###< PHP IMAGE FORM ARGUMENTS ###
+
+###> LOCALE ENV ###
+ENV MUSL_LOCPATH="/usr/share/i18n/locales/musl" \
+    LC_NUMERIC="ru_RU.UTF-8" \
+    LC_TIME="ru_RU.UTF-8" \
+    LC_COLLATE="ru_RU.UTF-8" \
+    LC_MONETARY="ru_RU.UTF-8" \
+    LC_MESSAGES="ru_RU.UTF-8" \
+    LC_PAPER="ru_RU.UTF-8" \
+    LC_NAME="ru_RU.UTF-8" \
+    LC_ADDRESS="ru_RU.UTF-8" \
+    LC_TELEPHONE="ru_RU.UTF-8" \
+    LC_MEASUREMENT="ru_RU.UTF-8" \
+    LC_IDENTIFICATION="ru_RU.UTF-8"
+###< LOCALE ENV ###
 
 RUN set -xe \
     ###> BASE UTILS ###
