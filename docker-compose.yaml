@@ -42,31 +42,46 @@ services:
             - /init.sh
             - ${APP_ENV:-dev}
         environment:
+            ### PHP ENV ###
             - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
             - VIRTUAL_PROTO=fastcgi
+            ###> BASH COLORS ###
             - TERM=xterm-256color
             - PS1=${PS1}
+            ###> LOCALE ENV ###
+            - LC_NUMERIC="ru_RU.UTF-8"
+            - LC_TIME="ru_RU.UTF-8"
+            - LC_COLLATE="ru_RU.UTF-8"
+            - LC_MONETARY="ru_RU.UTF-8"
+            - LC_MESSAGES="ru_RU.UTF-8"
+            - LC_PAPER="ru_RU.UTF-8"
+            - LC_NAME="ru_RU.UTF-8"
+            - LC_ADDRESS="ru_RU.UTF-8"
+            - LC_TELEPHONE="ru_RU.UTF-8"
+            - LC_MEASUREMENT="ru_RU.UTF-8"
+            - LC_IDENTIFICATION="ru_RU.UTF-8"
         volumes:
+            ###> BASH VOLUMES ###
             - ./bash/.bash_aliases:/home/${USER}/.bash_aliases
             - ./bash/.bashrc:/home/${USER}/.bashrc
             - ./bash/init.sh:/init.sh
-
+            ###> COMPOSER VOLUMES ###
             - ${COMPOSER_CONFIG_PATH:-./composer/.config}:/.composer
             - ${COMPOSER_CACHE_PATH:-./composer/.cache}:/.cache/composer
-            - ${YARN_PATH:-./yarn}:/home/${USER}/.yarn
-
+            ###> YARN VOLUMES ###
             - ${YARNRC_PATH:-./yarn/.yarnrc}:/home/${USER}/.yarnrc
             - ${YARN_CACHE_PATH:-./yarn/.config}:/home/${USER}/.cache
-
-            - ${PROJECT_PATH:-../}:/var/www/app
-
+            - ${YARN_PATH:-./yarn}:/home/${USER}/.yarn
+            ###> DOCKER USER VOLUMES
             - /home/${USER}/.ssh:/home/${USER}/.ssh:rw
             - /etc/group:/etc/group:ro
             - /etc/passwd:/etc/passwd:ro
             - /etc/shadow:/etc/shadow:ro
-
+            ###> TIMEZONE VOLUMES
             - /etc/localtime:/etc/localtime:ro
             - ./php/php.ini:/usr/local/etc/php/conf.d/custom.php.ini
+            ###> PROJECT VOLUME ###
+            - ${PROJECT_PATH:-../}:/var/www/app
         networks:
             - sql
             - backend
