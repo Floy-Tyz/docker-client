@@ -10,7 +10,6 @@ services:
         working_dir: /var/www/app
         environment:
             - VIRTUAL_HOST=${DOMAIN}
-            - LETSENCRYPT_HOST=${DOMAIN}
         depends_on:
             - php
         volumes:
@@ -54,6 +53,7 @@ services:
         volumes:
             ###> BASH VOLUMES ###
             - ./bash/.bash_aliases:/home/${USER}/.bash_aliases
+            - ./bash/.bash_history:/home/${USER}/.bash_history
             - ./bash/.bashrc:/home/${USER}/.bashrc
             - ./bash/init.sh:/init.sh
             ###> COMPOSER VOLUMES ###

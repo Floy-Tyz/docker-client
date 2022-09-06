@@ -4,3 +4,9 @@ services:
     php:
         volumes:
             - /home/${USER}/.gitconfig:/home/${USER}/.gitconfig:ro
+            ###> IMAGES SYMLINK ###
+            # - /var/www/app/website/public/images:/var/www/app/website/public/images
+
+    nginx:
+        environment:
+            - LETSENCRYPT_HOST=${DOMAIN}
