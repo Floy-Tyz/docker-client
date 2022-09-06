@@ -13,7 +13,7 @@ if test -f "$ENV_ABSOLUTE_PATH"; then
     IFS='=' read -r -a CONTAINER_NAME_ARRAY <<< "$CONTAINER_NAME_RAW"
     CONTAINER_NAME="${CONTAINER_NAME_ARRAY[1]}"
 
-    docker compose --env-file .env.local -f docker-compose.yaml -f docker-compose.prod.yaml -p "$CONTAINER_NAME" up --build -d
+    docker compose --env-file .env.local -f docker-compose.yaml -f docker-compose.prod.yaml -p "$CONTAINER_NAME" up --build -d -V
 else
     echo ""
     printf "%b%s do not exist%b\n" "$WARNING" "$ENV_ABSOLUTE_PATH" "$NC"
