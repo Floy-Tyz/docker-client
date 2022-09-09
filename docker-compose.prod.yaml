@@ -5,11 +5,11 @@ services:
         volumes:
             - /home/${USER}/.gitconfig:/home/${USER}/.gitconfig:ro
 
-            # - /var/www/app/website/public/images/:/var/www/app/website/public/images
+            # - /var/www/app/website/public/images/:/var/www/app/website/public/images/
 
     nginx:
         environment:
             - LETSENCRYPT_HOST=${DOMAIN}
 
 #        volumes:
-            # - /var/www/app/website/public/images/:/var/www/app/website/public/images
+            # - /var/www/app/website/public/images/:/var/www/app/website/public/images/
