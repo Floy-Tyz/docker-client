@@ -4,6 +4,7 @@ NC='\033[0m'
 touch nginx/logs/access.log
 touch nginx/logs/error.log
 touch bash/.bash_history
+touch yarn/.yarnrc
 
 ENV_ABSOLUTE_PATH=$(realpath "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.env.local")
 
