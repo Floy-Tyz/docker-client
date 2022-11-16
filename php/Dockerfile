@@ -66,6 +66,7 @@ RUN \
             pdo_mysql \
             opcache \
             exif \
+            zip \
     ###< INSTALL PHP EXTENSIONS \
     \
     ###> CACHE CLEAR ### \
