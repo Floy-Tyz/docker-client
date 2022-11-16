@@ -59,6 +59,8 @@ RUN \
             --with-jpeg=/usr/include/ \
             --with-webp=/usr/include/ \
         && docker-php-ext-configure intl \
+        && docker-php-ext-configure zip \
+            --with-libzip=/usr/include/ \
     ###< CONFIGURE PHP EXTENSIONS
     \
     ###> INSTALL PHP EXTENSIONS
