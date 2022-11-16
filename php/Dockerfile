@@ -59,8 +59,6 @@ RUN \
             --with-jpeg=/usr/include/ \
             --with-webp=/usr/include/ \
         && docker-php-ext-configure intl \
-        && docker-php-ext-configure zip \
-            --with-libzip=/usr/include/ \
     ###< CONFIGURE PHP EXTENSIONS
     \
     ###> INSTALL PHP EXTENSIONS
@@ -82,7 +80,6 @@ RUN \
         $PHPIZE_DEPS \
         zlib-dev \
         icu-dev \
-        libzip-dev \
         g++ \
     && rm -rf /tmp/* \
     && { find /usr/local/lib -type f -print0 | xargs -0r strip --strip-all -p 2>/dev/null || true; } \
