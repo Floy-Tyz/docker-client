@@ -47,6 +47,7 @@ RUN set -xe \
         make \
         $PHPIZE_DEPS \
         zlib-dev \
+        zip \
         icu-dev \
         libzip-dev \
         g++
